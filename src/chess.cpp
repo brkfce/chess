@@ -13,10 +13,6 @@ int main(void) {
 	cout << "Board created, pieces layed!\n";
 
 
-	for (int i = 0; i < 64; i++) {
-		cout << game_board->returnPiece(i);
-	}
-
 	delete game_board;
 	
 	return 0;

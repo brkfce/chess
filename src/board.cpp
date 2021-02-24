@@ -6,7 +6,6 @@
 // board constructor
 Board::Board(char * FEN)
 {
-	cout << "Board built";
 	FEN_string = FEN;
 	parse_FEN();
 }
@@ -23,27 +22,27 @@ void Board::parse_FEN(void)
 	for (int rank = 0; rank < 8; rank++) {
 		for (int file = 0; file < 8; file++) {
 			// FEN strings go from top left to bottom right, from white's perspective
-			current_square = 63 - (8 * rank) + file;
+			current_square = 64 - (8 * (rank+1)) + file;
 			cchar = FEN_string[char_counter];
 			char_counter++;
 			if (cchar == '1' || cchar == '2' || cchar == '3' || cchar == '4' || cchar == '5' || cchar == '6' || cchar == '7' || cchar == '8') {
 				// skip the number of spaces written in the FEN
 				for (int gap = 0; gap < atoi(&cchar); gap++) {
-					board_state[current_square + gap] = ' ';
+					board_state[current_square + gap] = ' ';					
 					file++;
 				}
 			}
 			else if (cchar == '/') {
-				// deliminates lines, can ignore
+				// deliminates lines, can ignore but must account for lost cycle
+				file--;
 			}
 			else {
 				board_state[current_square] = cchar;
 			}
 		}
-	}
-
+	}	
 	// this deals with the extra data associated with the game
-	char_counter += 2;	// skip the space after board data
+	char_counter++;	// skip the space after board data
 	// who's turn it is
 	cchar = FEN_string[char_counter];
 	if (cchar == 'w') {
@@ -74,11 +73,11 @@ void Board::parse_FEN(void)
 		if (cchar == 'q') {
 			black_castling[1] = 1;
 		}
+		char_counter++;
 		cchar = FEN_string[char_counter];
-		char_counter++;		
+		
 	}
-
-	char_counter += 2; // skip a space
+	char_counter++; // skip a space
 	// is en passant possible this move
 	cchar = FEN_string[char_counter];
 	if (cchar == '-') {
@@ -91,17 +90,17 @@ void Board::parse_FEN(void)
 		cchar = FEN_string[char_counter];
 		enpassant_square[1] = cchar;
 	}
-	
+		
 	char_counter += 2; // skip a space
 	// halfmove clock (number of moves since last capture or pawn move)
 	cchar = FEN_string[char_counter];
 	halfmove_clock = atoi(&cchar);	// possibility for undefined behaviour here, maybe find a better solution
-
+	
 	char_counter += 2; // skip a space
 	// fullmove clock (number of full moves, starts at 1 and incremented after blacks move
 	cchar = FEN_string[char_counter];
-	fullmove_clock = atoi(&cchar);	// possibility for undefined behaviour here, maybe find a better solution
-
+	fullmove_clock = atoi(&cchar);	// possibility for undefined behaviour here, maybe find a better solution	
+	
 }
 
 void Board::movePiece(int start_pos, int end_pos)
@@ -116,7 +115,7 @@ char Board::returnPiece(int pos)
 	return board_state[pos];
 }
 
-/*Board::~Board(void) 
+Board::~Board(void) 
 {
 	cout << "Table flipped, board destroyed. Goodbye!\n";
-}*/
+}

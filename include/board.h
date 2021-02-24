@@ -25,7 +25,7 @@ class Board
 		void parse_FEN(void); 
 		void movePiece(int, int);
 		char returnPiece(int);
-		//	~Board(void);
+		~Board(void);
 
 };
 
