@@ -7,10 +7,10 @@
 Board::Board(char * FEN)
 {
 	FEN_string = FEN;
-	parse_FEN();
+	parseFEN();
 }
 
-void Board::parse_FEN(void)
+void Board::parseFEN(void)
 {
 // note: minimal testing as to whether this is a valid FEN or not. Only an incorrect turn key will cause an issue, this should be resolved with more checks to the state of the board etc
 
@@ -18,6 +18,7 @@ void Board::parse_FEN(void)
 	int char_counter = 0;
 	int current_square;
 	char cchar;
+	int slash_counter = 0;
 	// this deals with the pieces on the board
 	for (int rank = 0; rank < 8; rank++) {
 		for (int file = 0; file < 8; file++) {
@@ -35,12 +36,18 @@ void Board::parse_FEN(void)
 			else if (cchar == '/') {
 				// deliminates lines, can ignore but must account for lost cycle
 				file--;
+				slash_counter++;
 			}
 			else {
 				board_state[current_square] = cchar;
 			}
 		}
 	}	
+	// check to see if there are enough slashes in the FEN
+	if (slash_counter != 7) {
+		cout << "Invalid FEN\n";
+		exit(0);
+	}
 	// this deals with the extra data associated with the game
 	char_counter++;	// skip the space after board data
 	// who's turn it is
@@ -103,16 +110,27 @@ void Board::parse_FEN(void)
 	
 }
 
-void Board::movePiece(int start_pos, int end_pos)
+void Board::updateBoard(char * new_board_state, int new_enpassant_index, char * new_white_castling, char * new_black_castling)
 {
-// no checks to see if a move is valid, that will be handled by each piece & a general more general board state verifer
-	board_state[end_pos] = board_state[start_pos];
-	board_state[start_pos] = ' ';
+	for (int i = 0; i < 64; i++) {
+		board_state[i] = new_board_state[i];
+	}
+	enpassant_index = new_enpassant_index;
+	for (int i = 0; i < 2; i++) {
+		white_castling[i] = new_white_castling[i];
+		black_castling[i] = new_black_castling[i];
+	}
 }
 
-char Board::returnPiece(int pos) 
-{
-	return board_state[pos];
+void Board::updateTransfer(tempBoardState * boardTransfer) {
+	for (int i = 0; i < 64; i++) {
+		boardTransfer->board_state[i] = board_state[i];
+	}
+	boardTransfer->enpassant_index = enpassant_index;
+	for (int i = 0; i < 2; i++) {
+		boardTransfer->white_castling[i] = white_castling[i];
+		boardTransfer->black_castling[i] = black_castling[i];
+	}
 }
 
 Board::~Board(void) 
