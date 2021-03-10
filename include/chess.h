@@ -1,14 +1,9 @@
 #ifndef CHESS_H
 #define CHESS_H
 
+#include "board.h"
 
-#include <stdio.h>
-#include<stdlib.h>
-#include<iostream>
-using namespace std;
-
-#include<board.h>
-
+#include <iostream>
 
 
 #endif

@@ -1,42 +1,45 @@
-// this "Board" class stores the board state
-// functionality will be added as required
-
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <stdlib.h>
-#include <iostream>
-using namespace std;
+#include <cstdint>
 
-struct tempBoardState {
-	char board_state[64];
-	int enpassant_index;
-	char white_castling[2];
-	char black_castling[2];
-} boardTransfer;
+// will be attempting to represent the board state using bitboards
+typedef uint64_t BitBoard;
+
 
 class Board
 {
-	private:
-		char board_state[64];
-		bool white_turn;
-		char * FEN_string;
-		int white_castling[2];
-		int black_castling[2];
-		char enpassant_square[2];
-		int enpassant_index;
-		int halfmove_clock;
-		int fullmove_clock;
+    public:
+        Board(char *);
+        Board(void);
+        ~Board(void);
 
-	public:
-		Board(char *);	// for generating with a FEN
-		Board(char *, int, char *, char *);
-		void parseFEN(void);	
-		void updateBoard(char *, int, char *, char *);
-		void updateTransfer(tempBoardState *);
-		~Board(void);
+
+    private:
+        BitBoard whitePawns;
+        BitBoard whiteRooks;
+        BitBoard whiteKnights;
+        BitBoard whiteBishops;
+        BitBoard whiteQueens;
+        BitBoard whiteKings;
+
+        BitBoard blackPawns;
+        BitBoard blackRooks;
+        BitBoard blackKnights;
+        BitBoard blackBishops;
+        BitBoard blackQueens;
+        BitBoard blackKings;
+
+        BitBoard whitePieces;
+        BitBoard blackPieces;
+        BitBoard allPieces;
+
+
 
 };
+
+// function to check if a FEN string is valid
+int validateFEN(char *);
 
 
 #endif
