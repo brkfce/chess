@@ -10,18 +10,16 @@ int main(int argc, char * argv[]) {
     if (argc == 1) {
         // no arguments, so start a new standard game
         // create a new default board
-        Board chessBoard = new Board::Board(void);
+        Board * chessBoard = new Board::Board();
     }
 
-    else {
+    else if (argc == 7) {
         // arguments should comprise of a FEN string, which will be parsed into a board state
         // create a new board from the FEN string
         // but first, check if FEN is valid
         int validFEN = 0;
 
-        char * FEN = &argv[1];
-        
-        validFEN = Board::validateFEN(char * FEN);
+        validFEN = validateFEN(argv);
         
         if (validFEN != 1) {
         // invalid FEN, aborting
@@ -29,7 +27,12 @@ int main(int argc, char * argv[]) {
         exit(0);
         }
 
-        Board chessBoard = new Board::Board(char * FEN);
+        Board * chessBoard = new Board::Board(argv);
+    }
+
+    else {
+        std::cout << "Invalid FEN, aborting..." << std::endl;
+        exit(0);
     }
 
     

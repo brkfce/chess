@@ -10,7 +10,7 @@ typedef uint64_t BitBoard;
 class Board
 {
     public:
-        Board(char *);
+        Board(char **);
         Board(void);
         ~Board(void);
 
@@ -39,7 +39,7 @@ class Board
 };
 
 // function to check if a FEN string is valid
-int validateFEN(char *);
+int validateFEN(char **);
 
 
 #endif
