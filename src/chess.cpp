@@ -1,4 +1,4 @@
-#include "..\include\chess.h"
+#include "../include/chess.h"
 
 int main(int argc, char * argv[]) {
 
@@ -10,7 +10,7 @@ int main(int argc, char * argv[]) {
     if (argc == 1) {
         // no arguments, so start a new standard game
         // create a new default board
-        Board * chessBoard = new Board::Board();
+        Board * chessBoard = new Board();
     }
 
     else if (argc == 7) {
@@ -23,11 +23,11 @@ int main(int argc, char * argv[]) {
         
         if (validFEN != 1) {
         // invalid FEN, aborting
-        std::cout << "Invalid FEN, aborting..." << std::endl;
+        std::cout << "Invalid FEN, aborting..." << validFEN << std::endl;
         exit(0);
         }
 
-        Board * chessBoard = new Board::Board(argv);
+        Board * chessBoard = new Board(argv);
     }
 
     else {
