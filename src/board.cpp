@@ -46,7 +46,40 @@ Board::Board(void) {
 // board destructor
 Board::~Board(void){}
 
+#include <iostream>
 
+// function to construct a readable FEN string from cin
+int constructFEN(char * FEN1, char * FEN2, char * FEN3, char * FEN4, char * FEN5, char * FEN6, char *  input) {
+    
+    int overallcounter = 0, fencounter = 0, charcounter = 0;
+    char writechar;
+        
+    while (input[overallcounter] != '\0') {      // seperate the different parts of the FEN
+        if (input[overallcounter] == ' ') {
+              writechar = '\0';
+        }
+
+        else {writechar = input[overallcounter];}        // identify which part of the FEN is required
+            
+        switch (fencounter) {
+            case 0 : FEN1[charcounter] = writechar; break;
+            case 1 : FEN2[charcounter] = writechar; break;
+            case 2 : FEN3[charcounter] = writechar; break;
+            case 3 : FEN4[charcounter] = writechar; break;
+            case 4 : FEN5[charcounter] = writechar; break;
+            case 5 : FEN6[charcounter] = writechar; break;
+            default : return 1;
+        }
+
+        overallcounter++;
+        charcounter++;
+
+        if (writechar == '\0') {charcounter = 0; fencounter++;}
+
+    } if (charcounter != 3) FEN6[charcounter] = '\0';   // to account for the loop ending early
+    
+    return 0; 
+}
 
 // function to check if a FEN string is valid (not if the board state is legal, only that the FEN can be interpreted)
 int validateFEN(char ** FEN){

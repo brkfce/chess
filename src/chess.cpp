@@ -21,34 +21,11 @@ int main(void) {
         // construct FEN
         char * FEN[6];
         char FEN1[73], FEN2[2], FEN3[5], FEN4[3], FEN5[3], FEN6[4];    // max sizes for each part of the FEN 
-        int overallcounter = 0, fencounter = 0, charcounter = 0;
-        char writechar;
-        
-        while (inputFEN[overallcounter] != '\0') {      // seperate the different parts of the FEN
-            if (inputFEN[overallcounter] == ' ') {
-                writechar = '\0';
-            }
-
-            else {writechar = inputFEN[overallcounter];}        // identify which part of the FEN is required
-            
-            switch (fencounter) {
-                case 0 : FEN1[charcounter] = writechar; break;
-                case 1 : FEN2[charcounter] = writechar; break;
-                case 2 : FEN3[charcounter] = writechar; break;
-                case 3 : FEN4[charcounter] = writechar; break;
-                case 4 : FEN5[charcounter] = writechar; break;
-                case 5 : FEN6[charcounter] = writechar; break;
-                default : std::cout << "Error reading FEN...aborting" << std::endl; exit(1);
-            }
-
-            overallcounter++;
-            charcounter++;
-
-            if (writechar == '\0') {charcounter = 0; fencounter++;}
-
-        } if (charcounter != 3) FEN6[charcounter] = '\0';   // to account for the loop ending eary
-
         FEN[0] = FEN1; FEN[1] = FEN2; FEN[2] = FEN3; FEN[3] = FEN4; FEN[4] = FEN5; FEN[5] = FEN6;
+        int validConstruct = 1;
+        validConstruct = constructFEN(FEN1, FEN2, FEN3, FEN4, FEN5, FEN6, inputFEN);
+        if (validConstruct == 0) {std::cout << "FEN read correctly..." << std::endl;}
+        else {std::cout << "Error reading FEN...aborting" << std::endl; exit(1);} 
 
         // check if FEN is valid
         int validFEN = 0;

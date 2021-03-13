@@ -38,6 +38,9 @@ class Board
 
 };
 
+// construct a FEN string from cin
+int constructFEN(char *, char *, char *, char *, char *, char *, char *);
+
 // function to check if a FEN string is valid
 int validateFEN(char **);
 
