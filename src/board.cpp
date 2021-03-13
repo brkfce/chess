@@ -51,7 +51,7 @@ Board::~Board(void){}
 // function to check if a FEN string is valid (not if the board state is legal, only that the FEN can be interpreted)
 int validateFEN(char ** FEN){
     // check main body of FEN
-    char * fenBoard = FEN[1];
+    char * fenBoard = FEN[0];
     int i = 0;
     // counts for the number of each piece in the FEN
     int whiteKing, whiteQueen, whiteBishop, whiteKnight, whiteRook, whitePawn, blackKing, blackQueen, blackBishop, blackKnight, blackRook, blackPawn, slashes, emptySquares, isNumber, linecounter, isPawn;
@@ -93,12 +93,12 @@ int validateFEN(char ** FEN){
     
 
     // check turn indicator is valid
-    char * fenTurn = FEN[2];
+    char * fenTurn = FEN[1];
     if (fenTurn[0] != 'w' && fenTurn[0] != 'b') {return(9);}
 
 
     //check castling indicator is valid
-    char * fenCastling = FEN[3];
+    char * fenCastling = FEN[2];
     i = 0;
     int whiteKingside, whiteQueenside, blackKingside, blackQueenside, noneAvailable;
     whiteKingside = whiteQueenside = blackKingside = blackQueenside = noneAvailable = 0;
@@ -118,7 +118,7 @@ int validateFEN(char ** FEN){
 
 
     // check enpassant validity
-    char * fenEnPassant = FEN[4];
+    char * fenEnPassant = FEN[3];
     i = 0;
     int validFile, validRank;
     validFile = validRank = 0;
@@ -143,7 +143,7 @@ int validateFEN(char ** FEN){
 
 
     // check halfmove validity
-    char * fenHalfMove = FEN[5];
+    char * fenHalfMove = FEN[4];
     i = 0;
     int validHalfMove = 0;
     while (fenHalfMove[i] != '\0') {
@@ -166,7 +166,7 @@ int validateFEN(char ** FEN){
 
 
     // check fullmove validity
-    char * fenFullMove = FEN[6];
+    char * fenFullMove = FEN[5];
     i = 0;
     int validFullMove = 0;
     while (fenFullMove[i] != '\0') {
