@@ -1,8 +1,10 @@
 #ifndef MOVES_H
 #define MOVES_H
 
+#include "pieces.h"
 #include <stdlib.h>
-#include "simpleboard.h"
+
+class Board;
 
 struct move{
     int start_index;
@@ -10,12 +12,14 @@ struct move{
     int enpassant;
     int castling;
     Board * origin_board;
-    move * next_move;
+    move * prev_move;
 };
 
-move * createMove(int, int, int, int, Board *, move *);
+move * createMove(int, int, int, int, int, Board *, move *);
 
-move * knightMoves(move *, Board *, int);
+int checkMove(int, int, int *);
+
+move * knightMoves(move *, Board *, int *, int, int);
 move * rookMoves(move *);
 move * bishopMoves(move *);
 move * queenMoves(move *);
