@@ -37,6 +37,9 @@ Board::Board(void) {
 // board destructor
 Board::~Board(void) {}
 
+int Board::checkSquare(int index) {
+    return board_state[index];
+}
 
 move * Board::generateMoves(void) {}
 

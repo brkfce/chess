@@ -12,6 +12,7 @@ class Board
         Board(int *);       // create a board for internal move evaluation
         ~Board(void);
 
+        int checkSquare(int);
         move * generateMoves(void);
         move * deleteMoves(void);
 
