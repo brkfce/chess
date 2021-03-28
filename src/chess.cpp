@@ -6,13 +6,18 @@ int main(void) {
 
     std::cout << "Please enter a FEN to start a custom game, or press return to start a fresh game: " << std::endl;
 
+
+
+
     char inputFEN[92];  // max theoretical FEN length
     std::cin.getline(inputFEN, 92);     // I know this is horrifically unsafe, but will do for now
     
 
+    Board * chessBoard;
+
     if (inputFEN[0] == '\0') {
         // create a new default board
-        Board * chessBoard = new Board();
+        chessBoard = new Board();
     }
 
     else {
@@ -38,15 +43,10 @@ int main(void) {
         exit(1);
         }
 
-        //Board * chessBoard = new Board(FEN);
+        chessBoard = new Board(FEN);
     }
 
     
-
-    
-
-    
-
 
     int validColour = 0;
     char colour;
@@ -66,11 +66,18 @@ int main(void) {
     }
 
     
+
+
+
+
+
     int gameEnd = 0;
     
     while (gameEnd == 0) {
         // game loop
     }
+
+    delete chessBoard;
 
     return 0;
 }

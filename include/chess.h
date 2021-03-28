@@ -1,7 +1,9 @@
 #ifndef CHESS_H
 #define CHESS_H
 
-#include "board.h"
+#include "simpleboard.h"
+#include "fen.h"
+#include "moves.h"
 
 #include <iostream>
 
