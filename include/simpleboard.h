@@ -1,7 +1,7 @@
 #ifndef SIMPLEBOARD_H
 #define SIMPLEBOARD_H
 
-#include "pieces.h"
+
 #include "moves.h"
 
 class Board
@@ -13,12 +13,12 @@ class Board
         ~Board(void);
 
         int checkSquare(int);
-        move * generateMoves(void);
-        move * deleteMoves(void);
+        move * generateMoves(Board *);
+        void deleteMoves(move *);
 
     private:
         int board_state[64];
-        int move;
+        int turn;
         int enpassant;
         int whiteKingside, whiteQueenside, blackKingside, blackQueenside;
 };

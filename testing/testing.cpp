@@ -1,15 +1,31 @@
 #include <iostream>
-#include "../include/board.h"
+#include "../include/simpleboard.h"
 
 void FENTesting(void);
+void movesTesting(void);
 
 int main(void) {
 
-    FENTesting();
+    movesTesting();
 
     return 0;
 }
 
+
+void movesTesting(void) {
+    Board * chessBoard = new Board();
+    move * head_move = chessBoard->generateMoves(chessBoard);
+    move * current_move = head_move;
+    while (current_move != NULL) {
+        std::cout << current_move->end_index << std::endl;
+        current_move = current_move->prev_move;
+    }
+    chessBoard->deleteMoves(head_move);
+    delete chessBoard;
+}
+
+
+/*
 void FENTesting(void) {
     char * FEN[6];
     int result;
@@ -127,3 +143,4 @@ void FENTesting(void) {
 
     while(1) {} // allow for reading of results
 }
+*/

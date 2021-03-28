@@ -27,7 +27,7 @@ Board::Board(void) {
     board_state[58] = board_state[61] = BLACKBISHOP;
     board_state[59] = BLACKQUEEN; board_state[60] = BLACKKING;
 
-    move = WHITEMOVE;
+    turn = WHITETURN;
     enpassant = 0;
     whiteKingside = whiteQueenside = blackKingside = blackQueenside = 1;
 
@@ -41,6 +41,29 @@ int Board::checkSquare(int index) {
     return board_state[index];
 }
 
-move * Board::generateMoves(void) {}
+move * Board::generateMoves(Board * this_board) {
+    // go through the board, generating a list of moves that are pseudolegal
+    move * current_move;
+    for (int i = 0; i < 64; i++) {
+        switch(board_state[i]) {
+            case WHITEKNIGHT:
+                current_move = knightMoves(current_move, this_board, board_state, i, WHITETURN);
+                break;
+            case BLACKKNIGHT:
+                current_move = knightMoves(current_move, this_board, board_state, i, BLACKTURN);
+                break;
+        }
+    }
+    return current_move;
+}
 
-move * Board::deleteMoves(void) {}
+void Board::deleteMoves(move * starting_move) {
+    // go through the list of moves, deallocating the space for each
+    move * current_move = starting_move;
+    move * temp_move;
+    while (current_move != NULL) {
+        temp_move = current_move;
+        current_move = current_move->prev_move;
+        free(temp_move);
+    }
+}
