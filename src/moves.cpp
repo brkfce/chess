@@ -151,3 +151,60 @@ move * rookMoves(move * prev_move, Board * board, int * board_state, int start_i
     return current_move;
 }
 
+move * bishopMoves(move * prev_move, Board * board, int * board_state, int start_index, int piece_colour) {
+   
+    move * current_move = prev_move;
+    int end_index;
+    int hit_friendly;
+
+    // moving up right
+    end_index = start_index;
+    hit_friendly = 0;
+    while ((end_index < 56) && ((end_index % 8) < 7) && (hit_friendly = 0)) {
+        end_index = end_index + 9;
+        if (checkMove(end_index, piece_colour, board_state) == 0) {
+            hit_friendly = 1;
+        }
+        else {
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+        }
+    }
+    // moving down right
+    end_index = start_index;
+    hit_friendly = 0;
+    while ((end_index > 7) && ((end_index % 8) < 7) && (hit_friendly = 0)) {
+        end_index = end_index - 7;
+        if (checkMove(end_index, piece_colour, board_state) == 0) {
+            hit_friendly = 1;
+        }
+        else {
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+        }
+    }
+    // moving up left
+    end_index = start_index;
+    hit_friendly = 0;
+    while ((end_index < 56) && ((end_index % 8) > 0) && (hit_friendly = 0)) {
+        end_index = end_index + 7;
+        if (checkMove(end_index, piece_colour, board_state) == 0) {
+            hit_friendly = 1;
+        }
+        else {
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+        }
+    }
+    // moving down left
+    end_index = start_index;
+    hit_friendly = 0;
+    while ((end_index > 7) && ((end_index % 8) > 0) && (hit_friendly = 0)) {
+        end_index = end_index - 9;
+        if (checkMove(end_index, piece_colour, board_state) == 0) {
+            hit_friendly = 1;
+        }
+        else {
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+        }
+    }
+    return current_move;
+}
+
