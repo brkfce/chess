@@ -151,6 +151,7 @@ move * rookMoves(move * prev_move, Board * board, int * board_state, int start_i
     return current_move;
 }
 
+// generate all the pseudolegal bishop moves
 move * bishopMoves(move * prev_move, Board * board, int * board_state, int start_index, int piece_colour) {
    
     move * current_move = prev_move;
@@ -208,3 +209,13 @@ move * bishopMoves(move * prev_move, Board * board, int * board_state, int start
     return current_move;
 }
 
+// generate the pseudolegal queen moves, from the bishop and rook moves
+move * queenMoves(move * prev_move, Board * board, int * board_state, int start_index, int piece_colour) {
+    
+    move * current_move = prev_move;
+
+    current_move = rookMoves(current_move, board, board_state, start_index, piece_colour);
+    current_move = bishopMoves(current_move, board, board_state, start_index, piece_colour);
+
+    return current_move;
+}

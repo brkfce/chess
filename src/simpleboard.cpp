@@ -57,6 +57,19 @@ move * Board::generateMoves(Board * this_board) {
                 break;
             case BLACKROOK:
                 current_move = rookMoves(current_move, this_board, board_state, i, BLACKTURN);
+                break;
+            case WHITEBISHOP:
+                current_move = bishopMoves(current_move, this_board, board_state, i, WHITETURN);
+                break;
+            case BLACKBISHOP:
+                current_move = bishopMoves(current_move, this_board, board_state, i, BLACKTURN);
+                break;
+            case WHITEQUEEN:
+                current_move = queenMoves(current_move, this_board, board_state, i, WHITETURN);
+                break;
+            case BLACKQUEEN:
+                current_move = queenMoves(current_move, this_board, board_state, i, BLACKTURN);
+                break;
         }
     }
     return current_move;
