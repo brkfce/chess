@@ -20,11 +20,11 @@ move * createMove(int, int, int, int, int, Board *, move *);
 int checkMove(int, int, int *);
 
 move * knightMoves(move *, Board *, int *, int, int);
-move * rookMoves(move *);
-move * bishopMoves(move *);
-move * queenMoves(move *);
-move * kingMoves(move *);
-move * whitepawnMoves(move *);
-move * blackpawnMoves(move *);
+move * rookMoves(move *, Board *, int *, int, int);
+move * bishopMoves(move *, Board *, int *, int, int);
+move * queenMoves(move *, Board *, int *, int, int);
+move * kingMoves(move *, Board *, int *, int, int);
+move * whitepawnMoves(move *, Board *, int *, int, int);
+move * blackpawnMoves(move *, Board *, int *, int, int);
 
 #endif
