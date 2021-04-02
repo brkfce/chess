@@ -219,3 +219,100 @@ move * queenMoves(move * prev_move, Board * board, int * board_state, int start_
 
     return current_move;
 }
+
+// generate the pseudolegal king moves, including castling (but without checking if castling passes through check)
+// that will be verified when identifying check
+move * kingMoves(move * prev_move, Board * board, int * board_state, int start_index, int piece_colour, int whiteKingside, int whiteQueenside, int blackKingside, int blackQueenside) {
+
+    move * current_move = prev_move;
+
+    // normal movement
+
+    int end_index;
+
+    int checkRight, checkLeft, checkUp, checkDown;
+    checkRight = checkLeft = checkUp = checkDown = 0;
+
+    if ((start_index % 8) < 7) {checkRight = 1;}
+    if ((start_index % 8) > 0) {checkLeft = 1;}
+    if (start_index > 7) {checkDown = 1;}
+    if (start_index < 56) {checkUp = 1;}
+
+    if (checkRight == 1) {
+        
+        // right horizontal
+        end_index = start_index + 1;
+        if (checkMove(end_index, piece_colour, board_state)) { 
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move); 
+        }
+        
+        // right up diagonal
+        end_index = start_index + 9;
+        if (checkUp == 1 && checkMove(end_index, piece_colour, board_state)) { 
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move); 
+        }
+        
+        // right down diagonal
+        end_index = start_index - 7;
+        if (checkDown == 1 && checkMove(end_index, piece_colour, board_state)) {
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+        }
+    }
+
+    if (checkLeft == 1) {
+
+         // left horizontal
+        end_index = start_index - 1;
+        if (checkMove(end_index, piece_colour, board_state)) { 
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move); 
+        }
+        
+        // left up diagonal
+        end_index = start_index + 7;
+        if (checkUp == 1 && checkMove(end_index, piece_colour, board_state)) { 
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move); 
+        }
+        
+        // left down diagonal
+        end_index = start_index - 9;
+        if (checkDown == 1 && checkMove(end_index, piece_colour, board_state)) {
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+        }
+    }
+
+    if (checkUp == 1) {
+        
+        // up vertical
+        end_index = start_index + 8;
+        if (checkMove(end_index, piece_colour, board_state)) {
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+        }
+
+        // down vertical
+        end_index = start_index - 8;
+        if (checkMove(end_index, piece_colour, board_state)) {
+            current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+        }
+    }
+
+    // castling (only pseudolegal, does not account for potential checks that could prevent)
+
+    if (piece_colour == WHITETURN) {
+        if (whiteKingside && board_state[5] == 0 && board_state[6] == 0) {
+            current_move = createMove(4, 6, 0, 1, board, current_move);
+        }
+        if (whiteQueenside && board_state[3] == 0 && board_state[2] == 0 && board_state[1] == 0) {
+            current_move = createMove(4, 2, 0, 1, board, current_move);
+        }
+    }
+    if (piece_colour == BLACKTURN) {
+        if (blackKingside && board_state[61] == 0 && board_state[62] == 0) {
+            current_move = createMove(60, 62, 0, 1, board, current_move);
+        }
+        if (blackQueenside && board_state[59] == 0 && board_state[58] == 0 && board_state[57] == 0) {
+            current_move = createMove(60, 58, 0, 1, board, current_move);
+        }
+    }
+
+    return current_move;
+}
