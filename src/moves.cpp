@@ -316,3 +316,87 @@ move * kingMoves(move * prev_move, Board * board, int * board_state, int start_i
 
     return current_move;
 }
+
+
+// note: cannot use checkMove for pawn moves, as pawns cannot capture going forwards
+// must instead use a manual board_state check for moves and captures
+
+// create pseudolegal white pawn moves including enpassant, but not including promotion (handled by board)
+move * whitepawnMoves(move * prev_move, Board * board, int * board_state, int start_index, int enpassant) {
+    
+    move * current_move = prev_move;
+
+    int end_index;
+
+    // single move forwards
+    end_index = start_index + 8;
+    if (board_state[end_index] == 0) {
+        current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+    }
+
+    // double move forwards
+    int middle_index = start_index + 8;
+    end_index = start_index + 16;
+    if (board_state[middle_index] == 0 && board_state[end_index] == 0 && start_index < 16) {
+        current_move = createMove(start_index, end_index, middle_index, 0, board, current_move);
+    }
+
+    // capture left
+    end_index = start_index + 7;
+    if ((start_index & 8) > 0 && board_state[end_index] > WHITEPAWN) {
+        current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+    }
+
+    // capture right
+    end_index = start_index + 9;
+    if ((start_index & 8) < 7 && board_state[end_index] > WHITEPAWN) {
+        current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+    }
+
+    // enpassant capture
+    if (enpassant == start_index + 7 || enpassant == start_index + 9) {
+        current_move = createMove(start_index, enpassant, 0, 0, board, current_move);
+    }
+
+    return current_move;
+}
+
+// create pseudolegal black pawn moves including enpassant, but not including promotion (handled by board)
+move * blackpawnMoves(move * prev_move, Board * board, int * board_state, int start_index, int enpassant) {
+    
+    move * current_move = prev_move;
+
+    int end_index;
+
+    // single move forwards
+    end_index = start_index - 8;
+    if (board_state[end_index] == 0) {
+        current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+    }
+
+    // double move forwards
+    int middle_index = start_index - 8;
+    end_index = start_index - 16;
+    if (board_state[middle_index] == 0 && board_state[end_index] == 0 && start_index < 16) {
+        current_move = createMove(start_index, end_index, middle_index, 0, board, current_move);
+    }
+
+    // capture left
+    end_index = start_index - 9;
+    if ((start_index & 8) > 0 && board_state[end_index] > WHITEPAWN) {
+        current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+    }
+
+    // capture right
+    end_index = start_index - 7;
+    if ((start_index & 8) < 7 && board_state[end_index] > WHITEPAWN) {
+        current_move = createMove(start_index, end_index, 0, 0, board, current_move);
+    }
+
+    // enpassant capture
+    if (enpassant == start_index - 7 || enpassant == start_index - 9) {
+        current_move = createMove(start_index, enpassant, 0, 0, board, current_move);
+    }
+
+    return current_move;
+}
