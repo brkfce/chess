@@ -23,7 +23,7 @@ move * knightMoves(move *, Board *, int *, int, int);
 move * rookMoves(move *, Board *, int *, int, int);
 move * bishopMoves(move *, Board *, int *, int, int);
 move * queenMoves(move *, Board *, int *, int, int);
-move * kingMoves(move *, Board *, int *, int, int);
+move * kingMoves(move *, Board *, int *, int, int, int, int, int, int);
 move * whitepawnMoves(move *, Board *, int *, int, int);
 move * blackpawnMoves(move *, Board *, int *, int, int);
 
