@@ -8,12 +8,12 @@
 #define WHITEBISHOP 4
 #define WHITEKNIGHT 5
 #define WHITEPAWN 6
-#define BLACKKING 7
-#define BLACKQUEEN 8
-#define BLACKROOK 9
-#define BLACKBISHOP 10
-#define BLACKKNIGHT 11
-#define BLACKPAWN 12
+#define BLACKKING -1
+#define BLACKQUEEN -2
+#define BLACKROOK -3
+#define BLACKBISHOP -4
+#define BLACKKNIGHT -5
+#define BLACKPAWN -6
 
 #define WHITETURN 1
 #define BLACKTURN 0

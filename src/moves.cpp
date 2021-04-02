@@ -15,7 +15,7 @@ move * createMove(int start, int end, int enp, int cast, Board * board, move * p
 // return 1 if move is pseudolegal, return 0 if move is impossible due to friendly piece
 int checkMove(int end_index, int piece_colour, int * board_state) {
     int end_piece = board_state[end_index];
-    if (end_piece == EMPTY || (piece_colour == WHITETURN && end_piece > WHITEPAWN) || (piece_colour == BLACKTURN && end_piece <= WHITEPAWN)){
+    if (end_piece == EMPTY || (piece_colour == WHITETURN && end_piece < EMPTY) || (piece_colour == BLACKTURN && end_piece > EMPTY)){
         return 1;
     }
     else return 0;
@@ -343,13 +343,13 @@ move * whitepawnMoves(move * prev_move, Board * board, int * board_state, int st
 
     // capture left
     end_index = start_index + 7;
-    if ((start_index & 8) > 0 && board_state[end_index] > WHITEPAWN) {
+    if ((start_index & 8) > 0 && board_state[end_index] < EMPTY) {
         current_move = createMove(start_index, end_index, 0, 0, board, current_move);
     }
 
     // capture right
     end_index = start_index + 9;
-    if ((start_index & 8) < 7 && board_state[end_index] > WHITEPAWN) {
+    if ((start_index & 8) < 7 && board_state[end_index] < EMPTY) {
         current_move = createMove(start_index, end_index, 0, 0, board, current_move);
     }
 
@@ -383,13 +383,13 @@ move * blackpawnMoves(move * prev_move, Board * board, int * board_state, int st
 
     // capture left
     end_index = start_index - 9;
-    if ((start_index & 8) > 0 && board_state[end_index] > WHITEPAWN) {
+    if ((start_index & 8) > 0 && board_state[end_index] > EMPTY) {
         current_move = createMove(start_index, end_index, 0, 0, board, current_move);
     }
 
     // capture right
     end_index = start_index - 7;
-    if ((start_index & 8) < 7 && board_state[end_index] > WHITEPAWN) {
+    if ((start_index & 8) < 7 && board_state[end_index] > EMPTY) {
         current_move = createMove(start_index, end_index, 0, 0, board, current_move);
     }
 
