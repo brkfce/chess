@@ -70,6 +70,17 @@ move * Board::generateMoves(Board * this_board) {
             case BLACKQUEEN:
                 current_move = queenMoves(current_move, this_board, board_state, i, BLACKTURN);
                 break;
+            case WHITEKING:
+                current_move = kingMoves(current_move, this_board, board_state, i, WHITETURN, whiteKingside, whiteQueenside);
+                break;
+            case BLACKKING:
+                current_move = kingMoves(current_move, this_board, board_state, i, BLACKTURN, blackKingside, blackQueenside);
+                break;
+            case WHITEPAWN:
+                current_move = whitepawnMoves(current_move, this_board, board_state, i, enpassant);
+                break;
+            case BLACKPAWN:
+                current_move = blackpawnMoves(current_move, this_board, board_state, i, enpassant);
         }
     }
     return current_move;
