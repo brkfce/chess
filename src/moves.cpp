@@ -222,7 +222,7 @@ move * queenMoves(move * prev_move, Board * board, int * board_state, int start_
 
 // generate the pseudolegal king moves, including castling (but without checking if castling passes through check)
 // that will be verified when identifying check
-move * kingMoves(move * prev_move, Board * board, int * board_state, int start_index, int piece_colour, int whiteKingside, int whiteQueenside, int blackKingside, int blackQueenside) {
+move * kingMoves(move * prev_move, Board * board, int * board_state, int start_index, int piece_colour, int kingside, int queenside) {
 
     move * current_move = prev_move;
 
@@ -298,18 +298,18 @@ move * kingMoves(move * prev_move, Board * board, int * board_state, int start_i
     // castling (only pseudolegal, does not account for potential checks that could prevent)
 
     if (piece_colour == WHITETURN) {
-        if (whiteKingside && board_state[5] == 0 && board_state[6] == 0) {
+        if (kingside && board_state[5] == 0 && board_state[6] == 0) {
             current_move = createMove(4, 6, 0, 1, board, current_move);
         }
-        if (whiteQueenside && board_state[3] == 0 && board_state[2] == 0 && board_state[1] == 0) {
+        if (queenside && board_state[3] == 0 && board_state[2] == 0 && board_state[1] == 0) {
             current_move = createMove(4, 2, 0, 1, board, current_move);
         }
     }
     if (piece_colour == BLACKTURN) {
-        if (blackKingside && board_state[61] == 0 && board_state[62] == 0) {
+        if (kingside && board_state[61] == 0 && board_state[62] == 0) {
             current_move = createMove(60, 62, 0, 1, board, current_move);
         }
-        if (blackQueenside && board_state[59] == 0 && board_state[58] == 0 && board_state[57] == 0) {
+        if (queenside && board_state[59] == 0 && board_state[58] == 0 && board_state[57] == 0) {
             current_move = createMove(60, 58, 0, 1, board, current_move);
         }
     }
