@@ -18,5 +18,7 @@
 #define WHITETURN 1
 #define BLACKTURN 0
 
+#define NOENPASSANT 100
+
 
 #endif
