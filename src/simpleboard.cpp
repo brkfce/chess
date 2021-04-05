@@ -1,87 +1,95 @@
 #include "../include/simpleboard.h"
+#include <iostream>
 
 // board constructor for FEN string
 Board::Board(char ** FEN) {
 
+    std::cout << "Starting Board..." << std::endl;
+
     // board state
-    for (int i = 0; i < 64; i++) {
-        int j;      // to be used for empty spaces later
+    int i = 0;  // FEN counter
+    int j = 0;  // board state counter
+    int k = 0;  // temp counter
+    while (FEN[0][i] != '\0') {
         // no validation necessary, as the FEN should have already been validated
         switch (FEN[0][i]) {
             case 'N' :
-                board_state[i] = WHITEKNIGHT; break;
+                board_state[j] = WHITEKNIGHT; break;
             case 'R' :
-                board_state[i] = WHITEROOK; break;
+                board_state[j] = WHITEROOK; break;
             case 'B' : 
-                board_state[i] = WHITEBISHOP; break;
+                board_state[j] = WHITEBISHOP; break;
             case 'Q' :
-                board_state[i] = WHITEQUEEN; break;
+                board_state[j] = WHITEQUEEN; break;
             case 'K' :
-                board_state[i] = WHITEKING; break;
+                board_state[j] = WHITEKING; break;
             case 'P' :
-                board_state[i] = WHITEPAWN; break;
+                board_state[j] = WHITEPAWN; break;
             case 'n' :
-                board_state[i] = BLACKKNIGHT; break;
+                board_state[j] = BLACKKNIGHT; break;
             case 'r' :
-                board_state[i] = BLACKROOK; break;
+                board_state[j] = BLACKROOK; break;
             case 'b' : 
-                board_state[i] = BLACKBISHOP; break;
+                board_state[j] = BLACKBISHOP; break;
             case 'q' :
-                board_state[i] = BLACKQUEEN; break;
+                board_state[j] = BLACKQUEEN; break;
             case 'k' :
-                board_state[i] = BLACKKING; break;
+                board_state[j] = BLACKKING; break;
             case 'p' :
-                board_state[i] = BLACKPAWN; break;
+                board_state[j] = BLACKPAWN; break;
             case '/' :
-                i--;    // deliminator, should be ignored and the counter reset to start
+                std::cout << "Line Read..." << std::endl;
+                j--;    // deliminator, should be ignored and the counter reset to start
                 break;
             case '1' :
-                board_state[i] = EMPTY;
-                break;
+                board_state[j] = EMPTY; break;
             case '2' :
-                for (j = i; j < 2; j++) {
-                    board_state[j] = EMPTY;
+                for (k = j; k < j + 2; k++) {
+                    board_state[k] = EMPTY;
                 }
-                i = j;
+                j = k - 1;
                 break;
             case '3' :
-                for (j = i; j < 3; j++) {
-                    board_state[j] = EMPTY;
+                for (k = j; k < j + 3; k++) {
+                    board_state[k] = EMPTY;
                 }
-                i = j;
+                j = k - 1;
                 break;
             case '4' :
-                for (j = i; j < 4; j++) {
-                    board_state[j] = EMPTY;
+                for (k = j; k < j + 4; k++) {
+                    board_state[k] = EMPTY;
                 }
-                i = j;
+                j = k - 1;
                 break;
             case '5' :
-                for (j = i; j < 5; j++) {
-                    board_state[j] = EMPTY;
+                for (k = j; k < j + 5; k++) {
+                    board_state[k] = EMPTY;
                 }
-                i = j;
+                j = k - 1;
                 break;
             case '6' :
-                for (j = i; j < 6; j++) {
-                    board_state[j] = EMPTY;
+                for (k = j; k < j + 6; k++) {
+                    board_state[k] = EMPTY;
                 }
-                i = j;
+                j = k - 1;
                 break;
             case '7' :
-                for (j = i; j < 7; j++) {
-                    board_state[j] = EMPTY;
+                for (k = j; k < j + 7; k++) {
+                    board_state[k] = EMPTY;
                 }
-                i = j;
+                j = k - 1;
                 break;
             case '8' :
-                for (j = i; j < 8; j++) {
-                    board_state[j] = EMPTY;
+                for (k = j; k < j + 8; k++) {
+                    board_state[k] = EMPTY;
                 }
-                i = j;
+                j = k - 1;
                 break;
         }
+        i++;
+        j++;
     }
+    std::cout << "Board set..." << std::endl;
 
     // turn indicator
     switch(FEN[1][0]) {
@@ -90,9 +98,10 @@ Board::Board(char ** FEN) {
         case 'b' :
             turn = BLACKTURN; break;
     }
+    std::cout << "Turn set..." << std::endl;
 
     // castling
-    int i = 0;
+    i = 0;
     if (FEN[2][0] == '-') {
         whiteKingside = whiteQueenside = blackKingside = blackQueenside = 0;
     }
@@ -107,7 +116,7 @@ Board::Board(char ** FEN) {
             i++;
         }
     }
-    
+    std::cout << "Castling set..." << std::endl;
 
     // enpassant
     if (FEN[3][0] == '-') {
@@ -140,46 +149,60 @@ Board::Board(char ** FEN) {
                 enpassant = enpassant + 40; break;
         }
     }
+    std::cout << "Enpassant set..." << std::endl;
 
     // halfmove
     int temp;
     halfmove = 0;
+    i = 0;
     while (FEN[4][i] != '\0') {
         switch (FEN[4][i]) {
              case '0' : temp = 0; break;
-             case '1' : if (i == 1) temp = 1; if (i == 0) temp = 10; break;
-             case '2' : if (i == 1) temp = 2; if (i == 0) temp = 20; break;
-             case '3' : if (i == 1) temp = 3; if (i == 0) temp = 30; break;
-             case '4' : if (i == 1) temp = 4; if (i == 0) temp = 40; break;
-             case '5' : if (i == 1) temp = 5; if (i == 0) temp = 50; break;
-             case '6' : if (i == 1) temp = 6; if (i == 0) temp = 60; break;
-             case '7' : if (i == 1) temp = 7; if (i == 0) temp = 70; break;
-             case '8' : if (i == 1) temp = 8; if (i == 0) temp = 80; break;
-             case '9' : if (i == 1) temp = 9; if (i == 0) temp = 90; break;
+             case '1' : temp = 1; break;
+             case '2' : temp = 2; break;
+             case '3' : temp = 3; break;
+             case '4' : temp = 4; break;
+             case '5' : temp = 5; break;
+             case '6' : temp = 6; break;
+             case '7' : temp = 7; break;
+             case '8' : temp = 8; break;
+             case '9' : temp = 9; break;
         }
-        i++;
+        halfmove = halfmove * 10;
         halfmove = halfmove + temp;
+        i++;
     }
+    std::cout << "Halfmove set..." << std::endl;
 
     // fullmove
-    int temp;
     fullmove = 0;
-    while (FEN[4][i] != '\0') {
-        switch (FEN[4][i]) {
+    i = 0;
+    while (FEN[5][i] != '\0') {
+        switch (FEN[5][i]) {
              case '0' : temp = 0; break;
-             case '1' : if (i == 2) temp = 1; if (i == 1) temp = 10; if (i == 0) temp = 100; break;
-             case '2' : if (i == 2) temp = 2; if (i == 1) temp = 20; if (i == 0) temp = 200; break;
-             case '3' : if (i == 2) temp = 3; if (i == 1) temp = 30; if (i == 0) temp = 300; break;
-             case '4' : if (i == 2) temp = 4; if (i == 1) temp = 40; if (i == 0) temp = 400; break;
-             case '5' : if (i == 2) temp = 5; if (i == 1) temp = 50; if (i == 0) temp = 500; break;
-             case '6' : if (i == 2) temp = 6; if (i == 1) temp = 60; if (i == 0) temp = 600; break;
-             case '7' : if (i == 2) temp = 7; if (i == 1) temp = 70; if (i == 0) temp = 700; break;
-             case '8' : if (i == 2) temp = 8; if (i == 1) temp = 80; if (i == 0) temp = 800; break;
-             case '9' : if (i == 2) temp = 9; if (i == 1) temp = 90; if (i == 0) temp = 900; break;
+             case '1' : temp = 1; break;
+             case '2' : temp = 2; break;
+             case '3' : temp = 3; break;
+             case '4' : temp = 4; break;
+             case '5' : temp = 5; break;
+             case '6' : temp = 6; break;
+             case '7' : temp = 7; break;
+             case '8' : temp = 8; break;
+             case '9' : temp = 9; break;
         }
-        i++;
+        fullmove = fullmove * 10;
         fullmove = fullmove + temp;
+        i++;
     }
+    std::cout << "Fullmove set..." << std::endl;
+
+    for (int i = 0; i < 64; i++) {
+        std::cout << board_state[i] << std::endl;
+    }
+    std::cout << turn << std::endl;
+    std::cout << enpassant << std::endl;
+    std::cout << halfmove << std::endl;
+    std::cout << fullmove << std::endl;
 }
 
 // board constructor for new game

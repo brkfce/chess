@@ -43,6 +43,7 @@ int main(void) {
         std::cout << "Invalid FEN, aborting..." << validFEN << std::endl;
         exit(1);
         }
+        else {std::cout << "Valid FEN..." << std::endl;}       
 
         chessBoard = new Board(FEN);
     }
