@@ -27,6 +27,7 @@ int main(void) {
         char * FEN[6];
         char FEN1[73], FEN2[2], FEN3[5], FEN4[3], FEN5[3], FEN6[4];    // max sizes for each part of the FEN 
         FEN[0] = FEN1; FEN[1] = FEN2; FEN[2] = FEN3; FEN[3] = FEN4; FEN[4] = FEN5; FEN[5] = FEN6;
+
         int validConstruct = 1;
         validConstruct = constructFEN(FEN1, FEN2, FEN3, FEN4, FEN5, FEN6, inputFEN);
         if (validConstruct == 0) {std::cout << "FEN read correctly..." << std::endl;}

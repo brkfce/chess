@@ -1,7 +1,186 @@
 #include "../include/simpleboard.h"
 
 // board constructor for FEN string
-Board::Board(char **) {}
+Board::Board(char ** FEN) {
+
+    // board state
+    for (int i = 0; i < 64; i++) {
+        int j;      // to be used for empty spaces later
+        // no validation necessary, as the FEN should have already been validated
+        switch (FEN[0][i]) {
+            case 'N' :
+                board_state[i] = WHITEKNIGHT; break;
+            case 'R' :
+                board_state[i] = WHITEROOK; break;
+            case 'B' : 
+                board_state[i] = WHITEBISHOP; break;
+            case 'Q' :
+                board_state[i] = WHITEQUEEN; break;
+            case 'K' :
+                board_state[i] = WHITEKING; break;
+            case 'P' :
+                board_state[i] = WHITEPAWN; break;
+            case 'n' :
+                board_state[i] = BLACKKNIGHT; break;
+            case 'r' :
+                board_state[i] = BLACKROOK; break;
+            case 'b' : 
+                board_state[i] = BLACKBISHOP; break;
+            case 'q' :
+                board_state[i] = BLACKQUEEN; break;
+            case 'k' :
+                board_state[i] = BLACKKING; break;
+            case 'p' :
+                board_state[i] = BLACKPAWN; break;
+            case '/' :
+                i--;    // deliminator, should be ignored and the counter reset to start
+                break;
+            case '1' :
+                board_state[i] = EMPTY;
+                break;
+            case '2' :
+                for (j = i; j < 2; j++) {
+                    board_state[j] = EMPTY;
+                }
+                i = j;
+                break;
+            case '3' :
+                for (j = i; j < 3; j++) {
+                    board_state[j] = EMPTY;
+                }
+                i = j;
+                break;
+            case '4' :
+                for (j = i; j < 4; j++) {
+                    board_state[j] = EMPTY;
+                }
+                i = j;
+                break;
+            case '5' :
+                for (j = i; j < 5; j++) {
+                    board_state[j] = EMPTY;
+                }
+                i = j;
+                break;
+            case '6' :
+                for (j = i; j < 6; j++) {
+                    board_state[j] = EMPTY;
+                }
+                i = j;
+                break;
+            case '7' :
+                for (j = i; j < 7; j++) {
+                    board_state[j] = EMPTY;
+                }
+                i = j;
+                break;
+            case '8' :
+                for (j = i; j < 8; j++) {
+                    board_state[j] = EMPTY;
+                }
+                i = j;
+                break;
+        }
+    }
+
+    // turn indicator
+    switch(FEN[1][0]) {
+        case 'w' :
+            turn = WHITETURN; break;
+        case 'b' :
+            turn = BLACKTURN; break;
+    }
+
+    // castling
+    int i = 0;
+    if (FEN[2][0] == '-') {
+        whiteKingside = whiteQueenside = blackKingside = blackQueenside = 0;
+    }
+    else {
+        while (FEN[2][i] != '\0') {
+            switch (FEN[2][i]) {
+             case 'K' : whiteKingside = 1; break;
+             case 'Q' : whiteQueenside = 1; break;
+             case 'k' : blackKingside = 1; break;
+             case 'q' : blackQueenside = 1; break;
+            }
+            i++;
+        }
+    }
+    
+
+    // enpassant
+    if (FEN[3][0] == '-') {
+        enpassant = NOENPASSANT;
+    }
+    else {
+        enpassant = 0;
+        switch (FEN[3][0]) {
+            case 'a' :
+                enpassant = enpassant + 0; break;
+            case 'b' :
+                enpassant = enpassant + 1; break;
+            case 'c' :
+                enpassant = enpassant + 2; break;
+            case 'd' :
+                enpassant = enpassant + 3; break;
+            case 'e' :
+                enpassant = enpassant + 4; break;
+            case 'f' :
+                enpassant = enpassant + 5; break;
+            case 'g' :
+                enpassant = enpassant + 6; break;
+            case 'h' :
+                enpassant = enpassant + 7; break;
+        }
+        switch(FEN[3][1]) {
+            case '3' :
+                enpassant = enpassant + 16; break;
+            case '6' :
+                enpassant = enpassant + 40; break;
+        }
+    }
+
+    // halfmove
+    int temp;
+    halfmove = 0;
+    while (FEN[4][i] != '\0') {
+        switch (FEN[4][i]) {
+             case '0' : temp = 0; break;
+             case '1' : if (i == 1) temp = 1; if (i == 0) temp = 10; break;
+             case '2' : if (i == 1) temp = 2; if (i == 0) temp = 20; break;
+             case '3' : if (i == 1) temp = 3; if (i == 0) temp = 30; break;
+             case '4' : if (i == 1) temp = 4; if (i == 0) temp = 40; break;
+             case '5' : if (i == 1) temp = 5; if (i == 0) temp = 50; break;
+             case '6' : if (i == 1) temp = 6; if (i == 0) temp = 60; break;
+             case '7' : if (i == 1) temp = 7; if (i == 0) temp = 70; break;
+             case '8' : if (i == 1) temp = 8; if (i == 0) temp = 80; break;
+             case '9' : if (i == 1) temp = 9; if (i == 0) temp = 90; break;
+        }
+        i++;
+        halfmove = halfmove + temp;
+    }
+
+    // fullmove
+    int temp;
+    fullmove = 0;
+    while (FEN[4][i] != '\0') {
+        switch (FEN[4][i]) {
+             case '0' : temp = 0; break;
+             case '1' : if (i == 2) temp = 1; if (i == 1) temp = 10; if (i == 0) temp = 100; break;
+             case '2' : if (i == 2) temp = 2; if (i == 1) temp = 20; if (i == 0) temp = 200; break;
+             case '3' : if (i == 2) temp = 3; if (i == 1) temp = 30; if (i == 0) temp = 300; break;
+             case '4' : if (i == 2) temp = 4; if (i == 1) temp = 40; if (i == 0) temp = 400; break;
+             case '5' : if (i == 2) temp = 5; if (i == 1) temp = 50; if (i == 0) temp = 500; break;
+             case '6' : if (i == 2) temp = 6; if (i == 1) temp = 60; if (i == 0) temp = 600; break;
+             case '7' : if (i == 2) temp = 7; if (i == 1) temp = 70; if (i == 0) temp = 700; break;
+             case '8' : if (i == 2) temp = 8; if (i == 1) temp = 80; if (i == 0) temp = 800; break;
+             case '9' : if (i == 2) temp = 9; if (i == 1) temp = 90; if (i == 0) temp = 900; break;
+        }
+        i++;
+        fullmove = fullmove + temp;
+    }
+}
 
 // board constructor for new game
 Board::Board(void) {
@@ -30,6 +209,8 @@ Board::Board(void) {
     turn = WHITETURN;
     enpassant = 0;
     whiteKingside = whiteQueenside = blackKingside = blackQueenside = 1;
+    halfmove = 0;
+    fullmove = 1;
 
 }
 
@@ -96,3 +277,4 @@ void Board::deleteMoves(move * starting_move) {
         free(temp_move);
     }
 }
+
