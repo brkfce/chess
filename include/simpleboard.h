@@ -21,6 +21,8 @@ class Board
         int turn;
         int enpassant;
         int whiteKingside, whiteQueenside, blackKingside, blackQueenside;
+        int halfmove;
+        int fullmove;
 };
 
 #endif
