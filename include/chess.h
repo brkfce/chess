@@ -3,6 +3,7 @@
 
 #include "simpleboard.h"
 #include "fen.h"
+#include "evaluation.h"
 
 #include <iostream>
 

@@ -304,15 +304,4 @@ move * Board::generateMoves(Board * this_board) {
     return current_move;
 }
 
-void Board::deleteMoves(move * starting_move) {
-    // go through the list of moves, deallocating the space for each
-    move * current_move = starting_move;
-    move * temp_move;
-    while (current_move != NULL) {
-        temp_move = current_move;
-        delete temp_move->new_board;
-        current_move = current_move->prev_move;
-        free(temp_move);
-    }
-}
 

@@ -77,6 +77,12 @@ int main(void) {
     
     while (gameEnd == 0) {
         // game loop
+        // gen legal moves player can choose between
+        // take player choice
+        // update board
+        // cleanup move choice
+        // gen best move for computer to play
+        // update board
     }
 
     delete chessBoard;

@@ -14,7 +14,6 @@ class Board
 
         int checkSquare(int);
         move * generateMoves(Board *);
-        void deleteMoves(move *);
 
         int board_state[64];
         int turn;

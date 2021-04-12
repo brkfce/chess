@@ -50,7 +50,20 @@ move * createMove(int start, int end, int enp, int cast, Board * origin_board, m
     created_move->new_board->fullmove++;
     created_move->child_move = NULL;
     created_move->prev_move = prev;
+    created_move->legality = UNKNOWN;
     return created_move;
+}
+
+void deleteMoves(move * starting_move) {
+      // go through the list of moves, deallocating the space for each
+    move * current_move = starting_move;
+    move * temp_move;
+    while (current_move != NULL) {
+        temp_move = current_move;
+        delete temp_move->new_board;
+        current_move = current_move->prev_move;
+        free(temp_move);
+    }
 }
 
 // return 1 if move is pseudolegal, return 0 if move is impossible due to friendly piece

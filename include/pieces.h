@@ -20,5 +20,9 @@
 
 #define NOENPASSANT 100
 
+#define LEGAL 1
+#define ILLEGAL -1
+#define UNKNOWN 0
+
 
 #endif

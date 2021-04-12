@@ -15,9 +15,12 @@ struct move{
     Board * new_board;
     move * child_move;
     move * prev_move;
+    int legality;
 };
 
 move * createMove(int, int, int, int, int, Board *, move *);
+
+void deleteMoves(move *);
 
 int checkMove(int, int, int *);
 
