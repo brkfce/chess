@@ -196,13 +196,6 @@ Board::Board(char ** FEN) {
     }
     std::cout << "Fullmove set..." << std::endl;
 
-    for (int i = 0; i < 64; i++) {
-        std::cout << board_state[i] << std::endl;
-    }
-    std::cout << turn << std::endl;
-    std::cout << enpassant << std::endl;
-    std::cout << halfmove << std::endl;
-    std::cout << fullmove << std::endl;
 }
 
 // board constructor for new game
@@ -237,6 +230,20 @@ Board::Board(void) {
 
 }
 
+// board constructor for move evaluation
+Board::Board(Board * origin_board) {
+    for (int i = 0; i < 64; i++) {
+        board_state[i] = origin_board->board_state[i];
+    }
+    turn = origin_board->turn;
+    enpassant = origin_board->enpassant;
+    whiteKingside = origin_board->whiteKingside;
+    whiteQueenside = origin_board->whiteQueenside;
+    blackKingside = origin_board->blackKingside;
+    blackQueenside = origin_board->blackQueenside;
+    halfmove = origin_board->halfmove;
+    fullmove = origin_board->fullmove;
+}
 
 // board destructor
 Board::~Board(void) {}
@@ -249,42 +256,49 @@ move * Board::generateMoves(Board * this_board) {
     // go through the board, generating a list of moves that are pseudolegal
     move * current_move;
     for (int i = 0; i < 64; i++) {
-        switch(board_state[i]) {
-            case WHITEKNIGHT:
-                current_move = knightMoves(current_move, this_board, board_state, i, WHITETURN);
-                break;
-            case BLACKKNIGHT:
-                current_move = knightMoves(current_move, this_board, board_state, i, BLACKTURN);
-                break;
-            case WHITEROOK:
-                current_move = rookMoves(current_move, this_board, board_state, i, WHITETURN);
-                break;
-            case BLACKROOK:
-                current_move = rookMoves(current_move, this_board, board_state, i, BLACKTURN);
-                break;
-            case WHITEBISHOP:
-                current_move = bishopMoves(current_move, this_board, board_state, i, WHITETURN);
-                break;
-            case BLACKBISHOP:
-                current_move = bishopMoves(current_move, this_board, board_state, i, BLACKTURN);
-                break;
-            case WHITEQUEEN:
-                current_move = queenMoves(current_move, this_board, board_state, i, WHITETURN);
-                break;
-            case BLACKQUEEN:
-                current_move = queenMoves(current_move, this_board, board_state, i, BLACKTURN);
-                break;
-            case WHITEKING:
-                current_move = kingMoves(current_move, this_board, board_state, i, WHITETURN, whiteKingside, whiteQueenside);
-                break;
-            case BLACKKING:
-                current_move = kingMoves(current_move, this_board, board_state, i, BLACKTURN, blackKingside, blackQueenside);
-                break;
-            case WHITEPAWN:
-                current_move = whitepawnMoves(current_move, this_board, board_state, i, enpassant);
-                break;
-            case BLACKPAWN:
-                current_move = blackpawnMoves(current_move, this_board, board_state, i, enpassant);
+        if (this_board->turn == WHITETURN) {
+            switch(this_board->board_state[i]) {
+                case WHITEKNIGHT:
+                    current_move = knightMoves(current_move, this_board, i, WHITETURN);
+                    break;
+                case WHITEROOK:
+                    current_move = rookMoves(current_move, this_board, i, WHITETURN);
+                    break;
+                case WHITEBISHOP:
+                    current_move = bishopMoves(current_move, this_board, i, WHITETURN);
+                    break;
+                case WHITEQUEEN:
+                    current_move = queenMoves(current_move, this_board, i, WHITETURN);
+                    break; 
+                case WHITEKING:
+                    current_move = kingMoves(current_move, this_board, i, WHITETURN, whiteKingside, whiteQueenside);
+                    break;
+                case WHITEPAWN:
+                    current_move = whitepawnMoves(current_move, this_board, i);
+                    break;
+            }
+        }
+        else {
+            switch(this_board->board_state[i]) {
+                case BLACKKNIGHT:
+                    current_move = knightMoves(current_move, this_board, i, BLACKTURN);
+                    break;
+                case BLACKROOK:
+                    current_move = rookMoves(current_move, this_board, i, BLACKTURN);
+                    break;
+                 case BLACKBISHOP:
+                    current_move = bishopMoves(current_move, this_board, i, BLACKTURN);
+                    break;
+                case BLACKQUEEN:
+                    current_move = queenMoves(current_move, this_board, i, BLACKTURN);
+                    break;
+                case BLACKKING:
+                    current_move = kingMoves(current_move, this_board, i, BLACKTURN, blackKingside, blackQueenside);
+                    break;
+                case BLACKPAWN:
+                    current_move = blackpawnMoves(current_move, this_board, i);
+                    break;
+            }
         }
     }
     return current_move;
@@ -296,6 +310,7 @@ void Board::deleteMoves(move * starting_move) {
     move * temp_move;
     while (current_move != NULL) {
         temp_move = current_move;
+        delete temp_move->new_board;
         current_move = current_move->prev_move;
         free(temp_move);
     }

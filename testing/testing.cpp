@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/simpleboard.h"
+#include "../include/fen.h"
 
 void FENTesting(void);
 void movesTesting(void);
